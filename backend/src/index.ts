@@ -1,8 +1,12 @@
 import { Hono } from 'hono'
-
+import {PrismaClient } from '@prisma/client/edge'
+import {withAccelerate} from '@prisma/extension-accelerate'
 const app = new Hono()
 
-app.post('/', (c) => {                   //c => means context , it contains req , res , next , error
+app.post('/', (c) => {     
+  const prisma = new PrismaClient({
+    datasourceUrl: env.DATABASE_URL,
+  }).$extends(withAccelerate())              //c => means context , it contains req , res , next , error
   return c.text('Hello Hono!')
 })
 
