@@ -1,32 +1,38 @@
 import { Hono } from 'hono'
-import {PrismaClient } from '@prisma/client/edge'
+import {PrismaClient} from '@prisma/client/edge'
 import {withAccelerate} from '@prisma/extension-accelerate'
+import {sign} from 'hono/jwt'
+import { SignatureKey } from 'hono/utils/jwt/jws'
 
 // Initialize Prisma Client
 const app = new Hono<{
   Bindings:{
+    JWT_SECRET: SignatureKey
     DATABASE_URL: string
   }
 }>()
 
-app.post('/', async (c) => {     
+app.post('/api/v1/signup', async (c) => {  
+  console.log(c.env);    
   const prisma = new PrismaClient({
-    datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());            //c => means context , it contains req , res , next , error
+    datasources: {
+        db: {
+            url: c.env.DATABASE_URL, // Replace with your actual connection string
+        },
+    },
+}).$extends(withAccelerate());            //c => means context , it contains req , res , next , error
   
   const body  =  await c.req.json();
-  await prisma.user.create({
-    data : {
+  const user = await prisma.user.create({
+    data: {
       email: body.email,
       password: body.password,
     },
   })
-  return c.text('Hello Hono!')
+  const token = await sign({ id: user.id } , c.env.JWT_SECRET)
+  return c.json({ jwt: token});
 })
 
-app.post('/api/v1/signup', (c) => {
-  return c.text('Signup Success')
-})
 app.post('/api/v1/signin', (c) => {
   return c.text('Signin Success')
 })
