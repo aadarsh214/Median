@@ -12,15 +12,10 @@ const app = new Hono<{
   }
 }>()
 
-app.post('/api/v1/signup', async (c) => {  
-  console.log(c.env);    
+app.post('/api/v1/signup', async (c) => {     
   const prisma = new PrismaClient({
-    datasources: {
-        db: {
-            url: c.env.DATABASE_URL, // Replace with your actual connection string
-        },
-    },
-}).$extends(withAccelerate());            //c => means context , it contains req , res , next , error
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());            //c => means context , it contains req , res , next , error
   
   const body  =  await c.req.json();
   const user = await prisma.user.create({
