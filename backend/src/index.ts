@@ -12,21 +12,35 @@ const app = new Hono<{
   }
 }>()
 
-app.post('/api/v1/signup', async (c) => {     
+app.post('/api/v1/signup', async (c) => {
   const prisma = new PrismaClient({
     datasourceUrl: c.env.DATABASE_URL,
-  }).$extends(withAccelerate());            //c => means context , it contains req , res , next , error
-  
-  const body  =  await c.req.json();
-  const user = await prisma.user.create({
-    data: {
-      email: body.email,
-      password: body.password,
-    },
-  })
-  const token = await sign({ id: user.id } , c.env.JWT_SECRET)
-  return c.json({ jwt: token});
-})
+  }).$extends(withAccelerate());
+
+  const body = await c.req.json();
+
+  // Check if name, email, and password are provided
+  if (!body.name || !body.email || !body.password) {
+    return c.json({ error: 'Name, email, and password are required' }, 400);
+  }
+
+  try {
+    const user = await prisma.user.create({
+      data: {
+        email: body.email,
+        password: body.password,
+        name: body.name,
+      },
+    });
+
+    const token = await sign({ id: user.id }, c.env.JWT_SECRET);
+    return c.json({ jwt: token });
+  } catch (error) {
+    console.error('Error creating user:', error);
+    return c.json({ error: 'An error occurred during signup.' }, 500);
+  }
+});
+
 
 app.post('/api/v1/signin', (c) => {
   return c.text('Signin Success')
