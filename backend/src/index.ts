@@ -19,26 +19,21 @@ app.post('/api/v1/signup', async (c) => {
 
   const body = await c.req.json();
 
-  // Check if name, email, and password are provided
-  if (!body.name || !body.email || !body.password) {
-    return c.json({ error: 'Name, email, and password are required' }, 400);
+  // Ensure name is included in the request body
+  if (!body.name) {
+    return c.json({ error: 'Name is required' }, 400);
   }
 
-  try {
-    const user = await prisma.user.create({
-      data: {
-        email: body.email,
-        password: body.password,
-        name: body.name,
-      },
-    });
+  const user = await prisma.user.create({
+    data: {
+      email: body.email,
+      password: body.password,
+      name: body.name,  // Include the name field
+    },
+  });
 
-    const token = await sign({ id: user.id }, c.env.JWT_SECRET);
-    return c.json({ jwt: token });
-  } catch (error) {
-    console.error('Error creating user:', error);
-    return c.json({ error: 'An error occurred during signup.' }, 500);
-  }
+  const token = await sign({ id: user.id }, c.env.JWT_SECRET);
+  return c.json({ jwt: token });
 });
 
 
