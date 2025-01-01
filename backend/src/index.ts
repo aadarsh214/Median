@@ -1,12 +1,26 @@
 import { Hono } from 'hono'
 import {PrismaClient } from '@prisma/client/edge'
 import {withAccelerate} from '@prisma/extension-accelerate'
-const app = new Hono()
 
-app.post('/', (c) => {     
+// Initialize Prisma Client
+const app = new Hono<{
+  Bindings:{
+    DATABASE_URL: string
+  }
+}>()
+
+app.post('/', async (c) => {     
   const prisma = new PrismaClient({
-    datasourceUrl: env.DATABASE_URL,
-  }).$extends(withAccelerate())              //c => means context , it contains req , res , next , error
+    datasourceUrl: c.env.DATABASE_URL,
+  }).$extends(withAccelerate());            //c => means context , it contains req , res , next , error
+  
+  const body  =  await c.req.json();
+  await prisma.user.create({
+    data : {
+      email: body.email,
+      password: body.password,
+    },
+  })
   return c.text('Hello Hono!')
 })
 
