@@ -1,7 +1,8 @@
-import { Hono } from 'hono'
 import { PrismaClient } from "@prisma/client/edge";
-import {withAccelerate} from '@prisma/extension-accelerate'
-import {sign} from 'hono/jwt'
+import { withAccelerate } from "@prisma/extension-accelerate";
+import { Hono } from "hono";
+import { sign } from "hono/jwt";
+
 
 
 // Initialize Prisma Client
@@ -24,16 +25,16 @@ app.post('/api/v1/signup', async (c) => {
     return c.json({ error: 'Name is required' }, 400);
   }
 
-  const user = await prisma.user.create({
+  const User = await prisma.user.create({
     data: {
       email: body.email,
       password: body.password,
       name: body.name,  // Include the name field
     },
   });
-  console.log(user)
+  console.log(User)
 
-  const token = await sign({ id: user.id }, c.env.JWT_SECRET as string);
+  const token = await sign({ id: User.id }, c.env.JWT_SECRET as string);
   return c.json({ jwt: token });
 });
 
