@@ -1,14 +1,14 @@
 import { Hono } from 'hono'
-import {PrismaClient} from '@prisma/client/edge.js'
+import { PrismaClient } from "@prisma/client/edge";
 import {withAccelerate} from '@prisma/extension-accelerate'
 import {sign} from 'hono/jwt'
-import { SignatureKey } from 'hono/utils/jwt/jws'
+
 
 // Initialize Prisma Client
 const app = new Hono<{
   Bindings:{
-    JWT_SECRET: SignatureKey
-    DATABASE_URL: string
+    JWT_SECRET: String;
+    DATABASE_URL: string;
   }
 }>()
 
@@ -31,8 +31,9 @@ app.post('/api/v1/signup', async (c) => {
       name: body.name,  // Include the name field
     },
   });
+  console.log(user)
 
-  const token = await sign({ id: user.id }, c.env.JWT_SECRET);
+  const token = await sign({ id: user.id }, c.env.JWT_SECRET as string);
   return c.json({ jwt: token });
 });
 
