@@ -3,8 +3,8 @@ main = "src/index.ts"
 compatibility_date = "2025-01-01"
 
 [vars]
-DATABASE_URL = "prisma+postgres://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiNTljMzVhZDQtOTYxZi00MzI1LTgyMDItZTVhMDJhNjZkYjJjIiwidGVuYW50X2lkIjoiYzMyYzIwOWYwNGM2MjYwOTU5MjM5MTNlZmJjNGJiNDlkNGVjYWM5OTk1ZGEwZDhiOGFhMzhlMzQyODgyZGViOSIsImludGVybmFsX3NlY3JldCI6IjUyNmJlZmM1LTJlM2YtNGEyYS1iYjUyLTM5Y2Q4Y2FiMTJkZCJ9.2VS8zzWg-ozmSERO78Y9K82pDk95Cr-gkveVNy97yUQ"
-JWT_SECRET= "ahdhsndjk"
+DATABASE_URL="prisma://accelerate.prisma-data.net/?api_key=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhcGlfa2V5IjoiOTk0M2IzMGItOGFiMC00ZTM3LWJhZjItYTkwNjRhYmUwMGQ1IiwidGVuYW50X2lkIjoiOTI5NWJhOTYzMzFiYjJmNTRmNDM1OGUwMzc0ZmEwMTQyMTlhMDIzMjFkNGY2NGVjNjZiNjBiNThlOTc4ZTVmOSIsImludGVybmFsX3NlY3JldCI6IjU3N2NhODE0LTJmN2UtNGZiZC1iN2M3LWM2NDhiODM1ZDM1YSJ9.cKMI_qG4UURbNEFzM3quWrGUjDUMlK2hD4YBRxgKKlg"
+JWT_SECRET='ahdhsndjk'
 
 # Uncomment and configure these if needed:
 # [[kv_namespaces]]
