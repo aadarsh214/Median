@@ -18,6 +18,5 @@ exports.BlogPostInput = zod_1.z.object({
 exports.BlogPostUpdate = zod_1.z.object({
     title: zod_1.z.string().min(1).max(255),
     content: zod_1.z.string().min(1).max(10000),
-    published: zod_1.z.boolean(),
     id: zod_1.z.string(),
 });

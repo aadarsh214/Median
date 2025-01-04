@@ -38,17 +38,14 @@ export type BlogPostInput = z.infer<typeof BlogPostInput>;
 export declare const BlogPostUpdate: z.ZodObject<{
     title: z.ZodString;
     content: z.ZodString;
-    published: z.ZodBoolean;
     id: z.ZodString;
 }, "strip", z.ZodTypeAny, {
     title: string;
     content: string;
-    published: boolean;
     id: string;
 }, {
     title: string;
     content: string;
-    published: boolean;
     id: string;
 }>;
 export type BlogPostUpdate = z.infer<typeof BlogPostUpdate>;

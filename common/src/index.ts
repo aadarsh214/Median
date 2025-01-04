@@ -26,7 +26,6 @@ export type BlogPostInput = z.infer<typeof BlogPostInput>
 export const BlogPostUpdate = z.object({
     title: z.string().min(1).max(255),
     content: z.string().min(1).max(10000),
-    published: z.boolean(),
     id: z.string(),
 })
 
